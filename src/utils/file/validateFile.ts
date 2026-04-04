@@ -1,8 +1,13 @@
 import { MAX_FILE_SIZE, SUPPORTED_EXTENSIONS, SUPPORTED_FORMATS } from '../../constants/audio';
 
+export type ValidationErrorCode =
+  | { code: 'EMPTY_FILE' }
+  | { code: 'FILE_TOO_LARGE'; maxMb: number }
+  | { code: 'UNSUPPORTED_FORMAT'; supported: string };
+
 export interface ValidationResult {
   valid: boolean;
-  error?: string;
+  validationError?: ValidationErrorCode;
 }
 
 /**
@@ -11,12 +16,12 @@ export interface ValidationResult {
  */
 export function validateFile(file: { name: string; type: string; size: number }): ValidationResult {
   if (file.size === 0) {
-    return { valid: false, error: 'ファイルが空です（0バイト）。' };
+    return { valid: false, validationError: { code: 'EMPTY_FILE' } };
   }
 
   if (file.size > MAX_FILE_SIZE) {
     const maxMb = MAX_FILE_SIZE / (1024 * 1024);
-    return { valid: false, error: `ファイルサイズが上限（${maxMb}MB）を超えています。` };
+    return { valid: false, validationError: { code: 'FILE_TOO_LARGE', maxMb } };
   }
 
   const ext = '.' + file.name.split('.').pop()?.toLowerCase();
@@ -27,7 +32,7 @@ export function validateFile(file: { name: string; type: string; size: number })
     const supported = SUPPORTED_EXTENSIONS.join(', ');
     return {
       valid: false,
-      error: `対応していないファイル形式です。対応形式: ${supported}`,
+      validationError: { code: 'UNSUPPORTED_FORMAT', supported },
     };
   }
 

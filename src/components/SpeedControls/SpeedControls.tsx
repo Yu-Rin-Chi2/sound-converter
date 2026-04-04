@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { SpeedOptions } from '../../types/audio';
 
 type Props = {
@@ -10,6 +11,8 @@ type Props = {
  * FFmpeg.wasm が必要な機能のため、有効化した際に注意文を表示する。
  */
 export const SpeedControls = ({ options, onChange }: Props) => {
+  const { t } = useTranslation();
+
   const handleToggle = () => {
     onChange({ ...options, enabled: !options.enabled });
   };
@@ -30,21 +33,21 @@ export const SpeedControls = ({ options, onChange }: Props) => {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-gray-200 text-sm font-semibold">
-            再生速度
+            {t('speed.title')}
             {options.enabled && (
               <span className="ml-2 px-1.5 py-0.5 text-xs bg-yellow-900/50 text-yellow-400 rounded border border-yellow-700">
-                FFmpeg 使用
+                {t('speed.ffmpegBadge')}
               </span>
             )}
           </h3>
-          <p className="text-gray-500 text-xs mt-0.5">速度を変えてファイルを保存（ピッチ維持オプション付き）</p>
+          <p className="text-gray-500 text-xs mt-0.5">{t('speed.description')}</p>
         </div>
 
         <button
           type="button"
           role="switch"
           aria-checked={options.enabled}
-          aria-label="再生速度調整"
+          aria-label={t('speed.ariaLabel')}
           onClick={handleToggle}
           className={`
             relative w-11 h-6 rounded-full transition-colors duration-200
@@ -68,10 +71,10 @@ export const SpeedControls = ({ options, onChange }: Props) => {
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <label htmlFor="speed-rate" className="text-xs text-gray-400">
-                速度
+                {t('speed.rateLabel')}
               </label>
               <span className="text-xs text-purple-400 font-mono">
-                {options.rate.toFixed(2)}x（{ratePercent}%）
+                {t('speed.rateDisplay', { rate: options.rate.toFixed(2), percent: ratePercent })}
               </span>
             </div>
             <input
@@ -86,11 +89,11 @@ export const SpeedControls = ({ options, onChange }: Props) => {
               aria-valuemin={0.5}
               aria-valuemax={4.0}
               aria-valuenow={options.rate}
-              aria-valuetext={`${options.rate}倍速`}
+              aria-valuetext={t('speed.ariaValueText', { rate: options.rate })}
             />
             <div className="flex justify-between text-xs text-gray-600 mt-1">
-              <span>0.5x（低速）</span>
-              <span>4.0x（高速）</span>
+              <span>{t('speed.sliderMinLabel')}</span>
+              <span>{t('speed.sliderMaxLabel')}</span>
             </div>
           </div>
 
@@ -110,11 +113,11 @@ export const SpeedControls = ({ options, onChange }: Props) => {
               "
             />
             <label htmlFor="preserve-pitch" className="text-sm text-gray-300 cursor-pointer select-none">
-              ピッチを維持する
+              {t('speed.preservePitch')}
               <span className="block text-xs text-gray-500 mt-0.5">
                 {options.preservePitch
-                  ? 'atempo フィルタのみ使用（速度変更・ピッチ変化なし）'
-                  : 'asetrate フィルタ使用（速度変更に伴いピッチも変化）'}
+                  ? t('speed.preservePitchOn')
+                  : t('speed.preservePitchOff')}
               </span>
             </label>
           </div>

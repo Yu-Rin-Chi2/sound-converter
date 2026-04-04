@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { TrimOptions } from '../../types/audio';
 
 type Props = {
@@ -9,6 +10,8 @@ type Props = {
  * 無音検出パラメータを調整するコントロールパネル。
  */
 export const TrimControls = ({ options, onChange }: Props) => {
+  const { t } = useTranslation();
+
   const handleToggle = () => {
     onChange({ ...options, enabled: !options.enabled });
   };
@@ -26,8 +29,8 @@ export const TrimControls = ({ options, onChange }: Props) => {
       {/* ヘッダー */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-gray-200 text-sm font-semibold">無音トリミング</h3>
-          <p className="text-gray-500 text-xs mt-0.5">先頭・末尾の無音部分を自動検出してカット</p>
+          <h3 className="text-gray-200 text-sm font-semibold">{t('trim.title')}</h3>
+          <p className="text-gray-500 text-xs mt-0.5">{t('trim.description')}</p>
         </div>
 
         {/* トグルスイッチ */}
@@ -35,7 +38,7 @@ export const TrimControls = ({ options, onChange }: Props) => {
           type="button"
           role="switch"
           aria-checked={options.enabled}
-          aria-label="無音トリミング"
+          aria-label={t('trim.ariaLabel')}
           onClick={handleToggle}
           className={`
             relative w-11 h-6 rounded-full transition-colors duration-200
@@ -60,7 +63,7 @@ export const TrimControls = ({ options, onChange }: Props) => {
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <label htmlFor="silence-threshold" className="text-xs text-gray-400">
-                無音閾値
+                {t('trim.thresholdLabel')}
               </label>
               <span className="text-xs text-green-400 font-mono">{options.silenceThreshold} dBFS</span>
             </div>
@@ -79,8 +82,8 @@ export const TrimControls = ({ options, onChange }: Props) => {
               aria-valuetext={`${options.silenceThreshold} dBFS`}
             />
             <div className="flex justify-between text-xs text-gray-600 mt-1">
-              <span>-80 dBFS（敏感）</span>
-              <span>-20 dBFS（鈍感）</span>
+              <span>{t('trim.sliderMinLabel')}</span>
+              <span>{t('trim.sliderMaxLabel')}</span>
             </div>
           </div>
 
@@ -88,7 +91,7 @@ export const TrimControls = ({ options, onChange }: Props) => {
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <label htmlFor="min-silence-duration" className="text-xs text-gray-400">
-                最小無音継続時間
+                {t('trim.minDurationLabel')}
               </label>
               <span className="text-xs text-green-400 font-mono">{options.minSilenceDuration} ms</span>
             </div>
@@ -104,7 +107,7 @@ export const TrimControls = ({ options, onChange }: Props) => {
               aria-valuemin={10}
               aria-valuemax={1000}
               aria-valuenow={options.minSilenceDuration}
-              aria-valuetext={`${options.minSilenceDuration} ミリ秒`}
+              aria-valuetext={t('trim.ariaValueText', { value: options.minSilenceDuration })}
             />
             <div className="flex justify-between text-xs text-gray-600 mt-1">
               <span>10ms</span>

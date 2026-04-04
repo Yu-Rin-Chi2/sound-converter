@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { VolumeOptions } from '../../types/audio';
 
 type Props = {
@@ -5,22 +6,24 @@ type Props = {
   onChange: (options: VolumeOptions) => void;
 };
 
-const MODE_LABELS: Record<VolumeOptions['mode'], string> = {
-  peak: 'ピーク正規化',
-  rms: 'RMS 正規化',
-  limit: 'リミッター',
-};
-
-const MODE_DESCRIPTIONS: Record<VolumeOptions['mode'], string> = {
-  peak: '最大振幅を指定 dBFS に合わせる',
-  rms: '平均音量を揃える（複数音源の統一に最適）',
-  limit: '指定 dBFS を超える箇所のみソフトクリップ',
-};
-
 /**
  * 音量の最大値・正規化モードを設定するコントロールパネル。
  */
 export const VolumeControls = ({ options, onChange }: Props) => {
+  const { t } = useTranslation();
+
+  const MODE_LABELS: Record<VolumeOptions['mode'], string> = {
+    peak: t('volume.modePeak'),
+    rms: t('volume.modeRms'),
+    limit: t('volume.modeLimit'),
+  };
+
+  const MODE_DESCRIPTIONS: Record<VolumeOptions['mode'], string> = {
+    peak: t('volume.modePeakDesc'),
+    rms: t('volume.modeRmsDesc'),
+    limit: t('volume.modeLimitDesc'),
+  };
+
   const handleToggle = () => {
     onChange({ ...options, enabled: !options.enabled });
   };
@@ -38,15 +41,15 @@ export const VolumeControls = ({ options, onChange }: Props) => {
       {/* ヘッダー */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-gray-200 text-sm font-semibold">音量調整</h3>
-          <p className="text-gray-500 text-xs mt-0.5">音量の正規化・リミット処理</p>
+          <h3 className="text-gray-200 text-sm font-semibold">{t('volume.title')}</h3>
+          <p className="text-gray-500 text-xs mt-0.5">{t('volume.description')}</p>
         </div>
 
         <button
           type="button"
           role="switch"
           aria-checked={options.enabled}
-          aria-label="音量調整"
+          aria-label={t('volume.ariaLabel')}
           onClick={handleToggle}
           className={`
             relative w-11 h-6 rounded-full transition-colors duration-200
@@ -69,7 +72,7 @@ export const VolumeControls = ({ options, onChange }: Props) => {
           {/* モード選択 */}
           <div>
             <label htmlFor="volume-mode" className="block text-xs text-gray-400 mb-1.5">
-              モード
+              {t('volume.modeLabel')}
             </label>
             <select
               id="volume-mode"
@@ -96,7 +99,7 @@ export const VolumeControls = ({ options, onChange }: Props) => {
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <label htmlFor="target-db" className="text-xs text-gray-400">
-                {options.mode === 'limit' ? 'クリッピング閾値' : 'ターゲット音量'}
+                {options.mode === 'limit' ? t('volume.clippingThresholdLabel') : t('volume.targetDbLabel')}
               </label>
               <span className="text-xs text-blue-400 font-mono">{options.targetDb} dBFS</span>
             </div>

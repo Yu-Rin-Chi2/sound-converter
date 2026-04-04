@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { validateFile } from '../utils/file/validateFile';
 
 /**
@@ -7,6 +8,7 @@ import { validateFile } from '../utils/file/validateFile';
  * timerRef でエラークリア用タイマーを管理し、アンマウント時に確実にクリアする。
  */
 export function useDropZone(onFilesAccepted: (files: File[]) => void) {
+  const { t } = useTranslation();
   const [isDragging, setIsDragging] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const dragCounterRef = useRef(0);
@@ -30,8 +32,21 @@ export function useDropZone(onFilesAccepted: (files: File[]) => void) {
         const result = validateFile(file);
         if (result.valid) {
           validFiles.push(file);
-        } else if (result.error) {
-          errors.push(`${file.name}: ${result.error}`);
+        } else if (result.validationError) {
+          const ve = result.validationError;
+          let errorMsg: string;
+          switch (ve.code) {
+            case 'EMPTY_FILE':
+              errorMsg = t('errors.emptyFile');
+              break;
+            case 'FILE_TOO_LARGE':
+              errorMsg = t('errors.fileTooLarge', { maxMb: ve.maxMb });
+              break;
+            case 'UNSUPPORTED_FORMAT':
+              errorMsg = t('errors.unsupportedFormat', { supported: ve.supported });
+              break;
+          }
+          errors.push(`${file.name}: ${errorMsg}`);
         }
       });
 
@@ -49,7 +64,7 @@ export function useDropZone(onFilesAccepted: (files: File[]) => void) {
         onFilesAccepted(validFiles);
       }
     },
-    [onFilesAccepted],
+    [onFilesAccepted, t],
   );
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {

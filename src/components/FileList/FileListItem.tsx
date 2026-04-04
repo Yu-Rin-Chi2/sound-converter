@@ -1,16 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import type { AudioFile } from '../../types/audio';
-import { downloadBlob } from '../../utils/file/downloadBlob';
 
 type Props = {
   audioFile: AudioFile;
   onRemove: (id: string) => void;
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  idle: '待機中',
-  processing: '処理中',
-  done: '完了',
-  error: 'エラー',
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -20,37 +13,37 @@ const STATUS_COLORS: Record<string, string> = {
   error: 'bg-red-900/50 text-red-300',
 };
 
-function formatDuration(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = (seconds % 60).toFixed(1);
-  return mins > 0 ? `${mins}:${secs.padStart(4, '0')}` : `${secs}秒`;
-}
-
-function formatMs(ms: number): string {
-  if (ms < 1000) return `${Math.round(ms)}ms`;
-  return `${(ms / 1000).toFixed(2)}秒`;
-}
-
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 /**
  * ファイル一覧の1行。ステータスバッジ・処理結果・ダウンロードボタンを表示。
  */
 export const FileListItem = ({ audioFile, onRemove }: Props) => {
+  const { t } = useTranslation();
   const { id, file, status, processResult, errorMessage } = audioFile;
 
-  const handleDownload = () => {
-    if (!processResult) return;
-    const ext = processResult.blob.type.includes('ogg') ? 'ogg'
-      : processResult.blob.type.includes('mpeg') ? 'mp3'
-      : 'wav';
-    const baseName = file.name.replace(/\.[^/.]+$/, '');
-    downloadBlob(processResult.blob, `${baseName}_converted.${ext}`);
+  const STATUS_LABELS: Record<string, string> = {
+    idle: t('fileItem.statusIdle'),
+    processing: t('fileItem.statusProcessing'),
+    done: t('fileItem.statusDone'),
+    error: t('fileItem.statusError'),
   };
+
+  function formatDuration(seconds: number): string {
+    const mins = Math.floor(seconds / 60);
+    const secs = (seconds % 60).toFixed(1);
+    if (mins > 0) return `${mins}:${secs.padStart(4, '0')}`;
+    return t('fileItem.seconds', { value: secs });
+  }
+
+  function formatMs(ms: number): string {
+    if (ms < 1000) return t('fileItem.milliseconds', { value: Math.round(ms) });
+    return t('fileItem.seconds', { value: (ms / 1000).toFixed(2) });
+  }
+
+  function formatFileSize(bytes: number): string {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
 
   return (
     <div className="flex items-center gap-4 p-4 bg-gray-800 rounded-xl border border-gray-700 transition-all duration-200 hover:border-gray-600">
@@ -83,7 +76,7 @@ export const FileListItem = ({ audioFile, onRemove }: Props) => {
               flex-shrink-0 px-2 py-0.5 rounded-full text-xs font-medium
               ${STATUS_COLORS[status]}
             `}
-            aria-label={`ステータス: ${STATUS_LABELS[status]}`}
+            aria-label={t('fileItem.statusAriaLabel', { status: STATUS_LABELS[status] })}
           >
             {STATUS_LABELS[status]}
           </span>
@@ -94,11 +87,14 @@ export const FileListItem = ({ audioFile, onRemove }: Props) => {
 
           {processResult && (
             <>
-              <span>元: {formatDuration(processResult.originalDuration)}</span>
-              <span className="text-green-400">→ {formatDuration(processResult.processedDuration)}</span>
+              <span>{t('fileItem.originalDuration', { duration: formatDuration(processResult.originalDuration) })}</span>
+              <span className="text-green-400">{t('fileItem.processedDuration', { duration: formatDuration(processResult.processedDuration) })}</span>
               {(processResult.startTrimMs > 0 || processResult.endTrimMs > 0) && (
                 <span className="text-yellow-400">
-                  先頭 {formatMs(processResult.startTrimMs)} / 末尾 {formatMs(processResult.endTrimMs)} カット
+                  {t('fileItem.trimInfo', {
+                    start: formatMs(processResult.startTrimMs),
+                    end: formatMs(processResult.endTrimMs),
+                  })}
                 </span>
               )}
             </>
@@ -118,37 +114,10 @@ export const FileListItem = ({ audioFile, onRemove }: Props) => {
         {status === 'processing' && (
           <div
             className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"
-            aria-label="処理中"
+            aria-label={t('fileItem.processingSpinner')}
           />
         )}
 
-        {/* ダウンロードボタン */}
-        {status === 'done' && processResult && (
-          <button
-            type="button"
-            onClick={handleDownload}
-            className="
-              flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-              bg-green-700 hover:bg-green-600 active:bg-green-800
-              text-white text-xs font-medium
-              transition-colors duration-150
-              focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800
-            "
-            aria-label={`${file.name} をダウンロード`}
-          >
-            <svg
-              className="w-3.5 h-3.5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            DL
-          </button>
-        )}
 
         {/* 削除ボタン */}
         <button
@@ -160,7 +129,7 @@ export const FileListItem = ({ audioFile, onRemove }: Props) => {
             transition-colors duration-150
             focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800
           "
-          aria-label={`${file.name} をリストから削除`}
+          aria-label={t('fileItem.removeAriaLabel', { name: file.name })}
           disabled={status === 'processing'}
         >
           <svg

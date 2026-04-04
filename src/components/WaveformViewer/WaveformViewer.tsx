@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWaveform } from '../../hooks/useWaveform';
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
  * wavesurfer.js を使ってインタラクティブな波形プレビューを描画する。
  */
 const WaveformPanel = ({ label, audioBlob, color = '#4ade80' }: Props) => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const { isReady, duration, isPlaying, togglePlay } = useWaveform(containerRef, audioBlob, { waveColor: color });
 
@@ -22,20 +24,20 @@ const WaveformPanel = ({ label, audioBlob, color = '#4ade80' }: Props) => {
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">{label}</span>
         {isReady && (
-          <span className="text-xs text-gray-500">{duration.toFixed(2)}秒</span>
+          <span className="text-xs text-gray-500">{t('waveform.seconds', { value: duration.toFixed(2) })}</span>
         )}
       </div>
 
       <div
         ref={containerRef}
         className="w-full"
-        aria-label={`${label}の波形`}
+        aria-label={t('waveform.panelAriaLabel', { label })}
         style={{ '--waveform-color': color } as React.CSSProperties}
       />
 
       {!isReady && (
         <div className="h-20 flex items-center justify-center">
-          <div className="flex gap-1 items-end" aria-label="波形読み込み中">
+          <div className="flex gap-1 items-end" aria-label={t('waveform.loadingAriaLabel')}>
             {[...Array(8)].map((_, i) => (
               <div
                 key={`bar-${i}`}
@@ -56,7 +58,7 @@ const WaveformPanel = ({ label, audioBlob, color = '#4ade80' }: Props) => {
             type="button"
             onClick={togglePlay}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-800 text-gray-300 text-xs font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-gray-900"
-            aria-label={isPlaying ? '停止' : '再生'}
+            aria-label={isPlaying ? t('waveform.stop') : t('waveform.play')}
           >
             {isPlaying ? (
               <>
@@ -64,14 +66,14 @@ const WaveformPanel = ({ label, audioBlob, color = '#4ade80' }: Props) => {
                   <rect x="6" y="4" width="4" height="16" />
                   <rect x="14" y="4" width="4" height="16" />
                 </svg>
-                停止
+                {t('waveform.stop')}
               </>
             ) : (
               <>
                 <svg className="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <polygon points="5,3 19,12 5,21" />
                 </svg>
-                再生
+                {t('waveform.play')}
               </>
             )}
           </button>
@@ -91,21 +93,23 @@ type WaveformViewerProps = {
  * processedBlob がない場合は After を非表示にする。
  */
 export const WaveformViewer = ({ originalBlob, processedBlob }: WaveformViewerProps) => {
+  const { t } = useTranslation();
+
   if (!originalBlob && !processedBlob) return null;
 
   return (
-    <section aria-label="波形プレビュー" className="space-y-3">
-      <h2 className="text-gray-300 text-sm font-medium">波形プレビュー</h2>
+    <section aria-label={t('waveform.ariaLabel')} className="space-y-3">
+      <h2 className="text-gray-300 text-sm font-medium">{t('waveform.title')}</h2>
 
       <WaveformPanel
-        label="変換前 (Before)"
+        label={t('waveform.before')}
         audioBlob={originalBlob}
         color="#60a5fa"
       />
 
       {processedBlob && (
         <WaveformPanel
-          label="変換後 (After)"
+          label={t('waveform.after')}
           audioBlob={processedBlob}
           color="#4ade80"
         />

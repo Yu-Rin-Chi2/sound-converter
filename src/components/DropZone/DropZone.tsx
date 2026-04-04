@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDropZone } from '../../hooks/useDropZone';
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
  * 複数ファイル可。
  */
 export const DropZone = ({ onFilesAccepted }: Props) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const {
     isDragging,
@@ -38,7 +40,7 @@ export const DropZone = ({ onFilesAccepted }: Props) => {
       <div
         role="button"
         tabIndex={0}
-        aria-label="音声ファイルをドロップまたはクリックして選択"
+        aria-label={t('dropzone.ariaLabel')}
         className={`
           relative flex flex-col items-center justify-center
           w-full min-h-48 rounded-2xl border-2 border-dashed
@@ -60,7 +62,7 @@ export const DropZone = ({ onFilesAccepted }: Props) => {
         {/* ドラッグ中のオーバーレイ */}
         {isDragging && (
           <div className="absolute inset-0 rounded-2xl bg-green-500/10 flex items-center justify-center">
-            <span className="text-green-400 text-lg font-medium">ここにドロップ</span>
+            <span className="text-green-400 text-lg font-medium">{t('dropzone.dragging')}</span>
           </div>
         )}
 
@@ -86,10 +88,10 @@ export const DropZone = ({ onFilesAccepted }: Props) => {
             </div>
 
             <p className="text-gray-200 text-lg font-medium mb-1">
-              ファイルをドロップ、またはクリックして選択
+              {t('dropzone.main')}
             </p>
             <p className="text-gray-400 text-sm">
-              WAV, MP3, OGG — 最大 200MB、複数ファイル対応
+              {t('dropzone.support')}
             </p>
           </>
         )}
@@ -112,7 +114,7 @@ export const DropZone = ({ onFilesAccepted }: Props) => {
           role="alert"
           aria-live="polite"
         >
-          <p className="text-red-400 text-sm font-medium mb-1">追加できないファイル:</p>
+          <p className="text-red-400 text-sm font-medium mb-1">{t('dropzone.errorTitle')}</p>
           <ul className="space-y-1">
             {validationErrors.map((error, index) => (
               <li key={`error-${index}`} className="text-red-300 text-xs">

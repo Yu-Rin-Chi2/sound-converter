@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import JSZip from 'jszip';
 import type { AudioFile, ProcessResult } from '../../types/audio';
 import { downloadBlob } from '../../utils/file/downloadBlob';
@@ -12,6 +13,8 @@ type IndividualDownloadProps = {
  * 個別ファイルのダウンロードボタン。
  */
 export const IndividualDownloadButton = ({ result, filename }: IndividualDownloadProps) => {
+  const { t } = useTranslation();
+
   const handleDownload = () => {
     downloadBlob(result.blob, filename);
   };
@@ -31,7 +34,7 @@ export const IndividualDownloadButton = ({ result, filename }: IndividualDownloa
       <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
       </svg>
-      ダウンロード
+      {t('download.download')}
     </button>
   );
 };
@@ -45,6 +48,7 @@ type BulkDownloadProps = {
  * JSZip を使って Blob から ZIP を生成する。
  */
 export const BulkDownloadButton = ({ files }: BulkDownloadProps) => {
+  const { t } = useTranslation();
   const [isGenerating, setIsGenerating] = useState(false);
 
   const doneFiles = files.filter((f) => f.status === 'done' && f.processResult);
@@ -87,19 +91,19 @@ export const BulkDownloadButton = ({ files }: BulkDownloadProps) => {
         transition-colors duration-150
         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900
       "
-      aria-label={`${doneFiles.length}件のファイルを ZIP でまとめてダウンロード`}
+      aria-label={t('download.bulkAriaLabel', { count: doneFiles.length })}
     >
       {isGenerating ? (
         <>
           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" />
-          <span>ZIP 生成中...</span>
+          <span>{t('download.generatingZip')}</span>
         </>
       ) : (
         <>
           <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          <span>一括 ZIP ダウンロード ({doneFiles.length}件)</span>
+          <span>{t('download.bulkDownload', { count: doneFiles.length })}</span>
         </>
       )}
     </button>
