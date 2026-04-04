@@ -1,8 +1,6 @@
 const ja = {
   app: {
-    subtitle: 'ゲーム音声素材整形ツール',
-    browserOnly: 'ブラウザ完結処理（サーバー送信なし）',
-    loading: '音声処理エンジンを準備中...',
+loading: '音声処理エンジンを準備中...',
     settingsTitle: '処理設定',
     outputFormat: '出力フォーマット',
     ffmpegLoading: 'FFmpeg.wasm をロード中...',

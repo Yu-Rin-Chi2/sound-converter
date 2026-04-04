@@ -198,26 +198,14 @@ export default function App() {
 
       {/* ヘッダー */}
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-8 z-10">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center">
+          <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center">
               <svg className="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
             </div>
-            <div>
-              <h1 className="text-white font-semibold text-lg leading-tight">Easy Sound Converter</h1>
-              <p className="text-gray-500 text-xs">{t('app.subtitle')}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              <svg className="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              <span>{t('app.browserOnly')}</span>
-            </div>
+            <h1 className="text-white font-semibold text-lg leading-tight">Easy Sound Converter</h1>
           </div>
         </div>
       </header>

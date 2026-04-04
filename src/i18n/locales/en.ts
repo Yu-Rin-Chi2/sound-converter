@@ -1,8 +1,6 @@
 const en = {
   app: {
-    subtitle: 'Game Audio Asset Formatter',
-    browserOnly: 'Browser-only processing (no server upload)',
-    loading: 'Preparing audio processing engine...',
+loading: 'Preparing audio processing engine...',
     settingsTitle: 'Processing Settings',
     outputFormat: 'Output Format',
     ffmpegLoading: 'Loading FFmpeg.wasm...',
