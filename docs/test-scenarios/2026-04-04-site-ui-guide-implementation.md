@@ -18,7 +18,7 @@
 | 2 | SiteNavBar に関連サービスリンクが表示される | `/` | 1. ページ最上部の SiteNavBar を確認する | 「🎨」「🖼️」「🔊」「🎮」「🏆」の絵文字リンクが左から順に表示される |
 | 3 | SiteNavBar の言語切り替えボタンが表示される | `/` | 1. SiteNavBar 右端を確認する | 「JA」「\|」「EN」が右端に横並びで表示される。初期状態では JA ボタンが白背景・太字のアクティブ状態になっている |
 | 4 | SiteNavBar にスタジオロゴが表示される | `/` | 1. SiteNavBar 右端の言語ボタンの右を確認する | 丸型のスタジオロゴ画像（`studio-logo.png`）が表示される |
-| 5 | SiteNavBar のリンクが外部 URL に遷移する | `/` | 1. SiteNavBar の「🖼️」リンクをクリックする | 新しいタブで `https://easy-image-converter.yurinchi2525.com/` が開く。元のタブの URL は変化しない |
+| 5 | SiteNavBar のリンクが外部 URL に遷移する | `/` | 1. SiteNavBar の「🖼️」リンクをクリックする | 新しいタブで `https://image-converter.yurinchi2525.com/` が開く。元のタブの URL は変化しない |
 | 6 | スタジオロゴリンクが外部 URL に遷移する | `/` | 1. SiteNavBar のスタジオロゴをクリックする | 新しいタブで `https://yurinchi2525.com/` が開く |
 | 7 | App Header が SiteNavBar の直下に固定される | `/` | 1. ページを下にスクロールして300px程度スクロールする 2. ページ上部を確認する | SiteNavBar（高さ 32px）の直下にアプリヘッダーが固定表示され、コンテンツの下に隠れない。ヘッダー背景は半透明のすりガラス効果で後ろのコンテンツが薄く透けて見える |
 | 8 | App Header にサービス名が表示される | `/` | 1. App Header の内容を確認する | 「Easy Sound Converter」のサービス名と音符アイコンがヘッダー左側に表示される |

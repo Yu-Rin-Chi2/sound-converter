@@ -415,7 +415,7 @@ const SITE_LINK_GROUPS = [
     groupKey: 'nav.groupTools',
     links: [
       { labelKey: 'nav.uiAssets',  emoji: '🎨', url: 'https://free-ui-assets.yurinchi2525.com/' },
-      { labelKey: 'nav.gameImage', emoji: '🖼️', url: 'https://easy-image-converter.yurinchi2525.com/' },
+      { labelKey: 'nav.gameImage', emoji: '🖼️', url: 'https://image-converter.yurinchi2525.com/' },
       { labelKey: 'nav.gameSound', emoji: '🔊', url: 'https://easy-sound-converter.yurinchi2525.com/' },
     ],
   },
