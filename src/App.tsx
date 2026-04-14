@@ -200,8 +200,11 @@ export default function App() {
 
       {/* ヘッダー */}
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-8 z-10">
-        <div className="px-4 sm:px-6 h-14 flex items-center">
-          <div className="flex items-center gap-2.5">
+        <div className="px-4 sm:px-6 h-14 grid grid-cols-3 items-center">
+          <div />
+
+          {/* 中央: ロゴ + タイトル */}
+          <div className="flex items-center justify-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center">
               <svg className="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
@@ -210,15 +213,21 @@ export default function App() {
             <h1 className="text-white font-semibold text-lg leading-tight">Easy Sound Converter</h1>
           </div>
 
-          {/* ? ヘルプボタン */}
-          <button
-            type="button"
-            onClick={() => setHelpOpen(true)}
-            className="ml-auto w-6 h-6 rounded-full border border-gray-500 text-gray-400 hover:text-white hover:border-gray-300 transition-colors flex items-center justify-center text-xs font-bold shrink-0"
-            aria-label={t('help.title')}
-          >
-            ?
-          </button>
+          {/* 右: ヘルプボタン */}
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => setHelpOpen(true)}
+              className="flex items-center justify-center w-7 h-7 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              aria-label={t('help.title')}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <circle cx="12" cy="17" r="0.5" fill="currentColor" />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
 
