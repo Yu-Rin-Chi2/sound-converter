@@ -12,13 +12,13 @@ i18n
       ja: { translation: ja },
       en: { translation: en },
     },
-    fallbackLng: 'ja',
+    fallbackLng: 'en',
     supportedLngs: ['ja', 'en'],
     interpolation: {
       escapeValue: false,
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage'],
     },
   });

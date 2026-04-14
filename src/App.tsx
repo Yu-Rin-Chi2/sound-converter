@@ -10,6 +10,7 @@ import { SpeedControls } from './components/SpeedControls';
 import { BulkDownloadButton, IndividualDownloadButton } from './components/DownloadButton';
 import { SiteNavBar } from './components/SiteNavBar';
 import { TermsModal } from './components/TermsModal';
+import { HelpModal } from './components/HelpModal';
 import { useAudioProcessor } from './hooks/useAudioProcessor';
 import { SILENCE_THRESHOLD, MIN_SILENCE_DURATION } from './constants/audio';
 
@@ -46,6 +47,7 @@ export default function App() {
 
   // 共通UI state
   const [termsOpen, setTermsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const shareRef = useRef<HTMLDivElement>(null);
@@ -198,7 +200,7 @@ export default function App() {
 
       {/* ヘッダー */}
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-8 z-10">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center">
+        <div className="px-4 sm:px-6 h-14 flex items-center">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center">
               <svg className="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -207,6 +209,16 @@ export default function App() {
             </div>
             <h1 className="text-white font-semibold text-lg leading-tight">Easy Sound Converter</h1>
           </div>
+
+          {/* ? ヘルプボタン */}
+          <button
+            type="button"
+            onClick={() => setHelpOpen(true)}
+            className="ml-auto w-6 h-6 rounded-full border border-gray-500 text-gray-400 hover:text-white hover:border-gray-300 transition-colors flex items-center justify-center text-xs font-bold shrink-0"
+            aria-label={t('help.title')}
+          >
+            ?
+          </button>
         </div>
       </header>
 
@@ -519,6 +531,7 @@ export default function App() {
       </footer>
 
       <TermsModal isOpen={termsOpen} onClose={() => setTermsOpen(false)} />
+      <HelpModal isOpen={helpOpen} onClose={() => setHelpOpen(false)} />
     </div>
   );
 }
